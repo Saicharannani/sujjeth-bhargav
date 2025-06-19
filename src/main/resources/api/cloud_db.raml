@@ -1,0 +1,63 @@
+#%RAML 1.0
+title: cloud_db
+
+/teacher:
+  get:
+    description: Fetch all teacher information
+    responses:
+      200:
+        body:
+          application/json:
+
+  post:
+    description: Create a new teacher
+    body:
+      application/json:
+          
+    responses:
+      201:
+        body:
+          application/json:
+            example:
+              {"message": "Teacher created successfully"}
+
+/teacher/{teacher_id}:
+  get:
+    description: Fetch a specific teacher by ID
+    responses:
+      200:
+        body:
+          application/json:
+          
+      404:
+        body:
+          application/json:
+            example:
+              {"error": "Teacher not found"}
+
+  put:
+    description: Update an existing teacher by ID
+    body:
+      application/json:
+        
+    responses:
+      200:
+        body:
+          application/json:
+            example:
+              {"message": "Teacher updated successfully"}
+      404:
+        body:
+          application/json:
+            example:
+              {"error": "Teacher not found"}
+
+  delete:
+    description: Delete a teacher by ID
+    responses:
+      204:
+        description: Teacher deleted successfully
+        body:
+          application/json:
+            example:
+              {"message": "Deleted successfully"}
