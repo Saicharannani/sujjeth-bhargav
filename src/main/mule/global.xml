@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:api-gateway="http://www.mulesoft.org/schema/mule/api-gateway" xmlns:db="http://www.mulesoft.org/schema/mule/db"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/mule/api-gateway/current/mule-api-gateway.xsd">
+	<db:config name="Database_Config" doc:name="Database Config" doc:id="b7f9cb39-ce25-45eb-b644-f4fc3584372e" >
+		<db:my-sql-connection host="sql12.freesqldatabase.com" port="3306" user="sql12767283" password="8XQDilXdeX" database="sql12767283" />
+	</db:config>
+	<api-gateway:autodiscovery apiId="20249026" ignoreBasePath="true" doc:name="API Autodiscovery" doc:id="d2813726-40b7-40e0-872b-85d34b1fcd10" flowRef="cloud_db-main" />
+</mule>
