@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:db="http://www.mulesoft.org/schema/mule/db"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<flow name="getting_complete_details" doc:id="b290380f-85ac-4692-aa40-e1c755faab5f" >
+		<db:select doc:id="95041960-0aac-4b47-bc1c-92c2dbab889a" config-ref="Database_Config">
+			<db:sql ><![CDATA[select * from teachers]]></db:sql>
+		</db:select>
+		<ee:transform doc:name="Transform Message" doc:id="31d623ff-412a-4d1a-8db4-a68cd3d0134f" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="getting_specific" doc:id="773a220a-6f1c-4848-bda2-3745cf5555e1" >
+		<db:select doc:name="Select" doc:id="fd2cad7a-f5b3-45b3-8671-1bdb42a05698" config-ref="Database_Config">
+			<db:sql ><![CDATA[select * from teachers where id= :id]]></db:sql>
+			<db:input-parameters ><![CDATA[#[{
+	id:attributes.uriParams.teacher_id
+}]]]></db:input-parameters>
+		</db:select>
+		<ee:transform doc:name="Transform Message" doc:id="5d14b584-3cb7-4d26-8102-fa70bbb8969c" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="putting_details" doc:id="2e454b52-7ad0-4369-a7aa-06dc065bc323" >
+		<db:insert doc:name="Insert" doc:id="1a1da038-4d38-43ea-8d98-3c22259e68c7" config-ref="Database_Config">
+			<db:sql ><![CDATA[INSERT INTO teachers(id,name,salary,dept) VALUES(:id,:name,:salary,:dept)]]></db:sql>
+			<db:input-parameters ><![CDATA[#[{
+	id:payload.id,
+	name:payload.name,
+	salary:payload.salary,
+	dept:payload.dept
+}]]]></db:input-parameters>
+		</db:insert>
+		<ee:transform doc:name="Transform Message" doc:id="1b7d4ffb-02e6-4ea9-80d8-4b1348df1f55" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="deleting_details" doc:id="0fcef8cd-158b-400d-84e0-947d7f704131" >
+		<db:delete doc:name="" doc:id="7b5cf199-e501-4041-af70-a3cfc8717dd6" config-ref="Database_Config">
+			<db:sql ><![CDATA[DELETE FROM teachers WHERE id=:id]]></db:sql>
+			<db:input-parameters ><![CDATA[#[{
+	id:attributes.uriParams.teacher_id
+}]]]></db:input-parameters>
+		</db:delete>
+		<ee:transform doc:name="Transform Message" doc:id="888e36b7-dd96-4589-9fdf-21fa47d1e187" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="Updating_details" doc:id="b48bf792-006a-4782-a76d-69dcf73a2eaa" >
+		<db:update doc:name="" doc:id="f1b322ad-0021-4379-a565-3a41127960ca" config-ref="Database_Config">
+			<db:sql ><![CDATA[UPDATE teachers 
+SET name = :name, salary = :salary, dept = :dept 
+WHERE id = :id
+]]></db:sql>
+			<db:input-parameters ><![CDATA[#[{
+	id:payload.id,
+	name:payload.name,
+	salary:payload.salary,
+	dept:payload.dept
+}]]]></db:input-parameters>
+		</db:update>
+		<ee:transform doc:name="Transform Message" doc:id="1451ad50-56cd-499b-a02c-f494f73a05d3" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>
